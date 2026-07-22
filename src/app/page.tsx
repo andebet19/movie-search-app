@@ -23,8 +23,8 @@ export default function Home() {
     setError("");
 
     try {
-      // Using public OMDb API demo key for testing
-      const res = await fetch(`https://www.omdbapi.com/?apikey=trilogy&s=${encodeURIComponent(query)}`);
+      // FIX 1: Using the environment variable instead of hardcoded key
+      const res = await fetch(`https://www.omdbapi.com/?apikey=${process.env.NEXT_PUBLIC_OMDB_API_KEY}&s=${encodeURIComponent(query)}`);
       const data = await res.json();
 
       if (data.Response === "True") {
@@ -33,7 +33,8 @@ export default function Home() {
         setMovies([]);
         setError(data.Error || "No movies found.");
       }
-    } catch (err) {
+    } catch {
+      // FIX 3: Removed the unused 'err' variable from the catch block
       setError("Failed to fetch movies. Please check your connection.");
     } finally {
       setLoading(false);
@@ -55,12 +56,13 @@ export default function Home() {
             placeholder="Search for a movie (e.g., Avengers, Batman)..."
             className="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-slate-800 focus:outline-none focus:border-blue-500 text-white placeholder-slate-500"
           />
+          {/* FIX 4: Added disabled={loading} to the button */}
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200 disabled:opacity-50"
           >
-            Search
+            {loading ? "Searching..." : "Search"}
           </button>
         </form>
 
