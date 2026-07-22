@@ -57,6 +57,7 @@ export default function Home() {
           />
           <button
             type="submit"
+            disabled={loading}
             className="px-6 py-3 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition duration-200"
           >
             Search
